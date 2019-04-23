@@ -1,0 +1,17 @@
+{
+  "name": "tttlbe",
+  "version": "1.0.0",
+  "description": "twitch to text lambda back end",
+  "main": "handler.js",
+  "dependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "jest": "^24.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Rob Elsner",
+  "license": "MIT"
+}
