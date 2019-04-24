@@ -8,4 +8,4 @@ const twitch = new TwitchHelix({
   clientSecret,
 });
 
-module.exports.twitch = twitch;
+module.exports = twitch;
