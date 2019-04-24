@@ -4,8 +4,15 @@
   "description": "twitch to text lambda back end",
   "main": "handler.js",
   "dependencies": {
+    "aws-sdk": "^2.441.0",
     "eslint-config-airbnb": "^17.1.0",
-    "jest": "^24.7.1"
+    "jest": "^24.7.1",
+    "koa": "^2.7.0",
+    "koa-body": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "koa-session2": "^2.2.10",
+    "serverless-http": "^2.0.1",
+    "twitch-helix": "^1.0.7"
   },
   "devDependencies": {
     "eslint": "^5.0.0",

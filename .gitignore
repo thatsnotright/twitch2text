@@ -13,6 +13,8 @@
 
 be/env.sh
 be/.serverless/*.zip
+be/.serverless/cloudformation-template-update-stack.json
+be/.serverless/serverless-state.json
 
 # misc
 .DS_Store
