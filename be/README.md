@@ -5,9 +5,8 @@ Ensure you have a working "serverless" command or "npx" command.
 To deploy, ensure you have configured the AWS client ~/.aws/credentials correctly
 
 Run
-'''
-nmx serverless deploy
-'''
+> nmx serverless deploy
+
 
 And you should be greeted with a working lambda function exposing the endpoints.
 
@@ -30,3 +29,6 @@ https://clips-media-assets2.twitch.tv/23981882576-offset-14988-40-preview-480x27
 `
 
 not exactly helpful twitch...
+
+### Download the clip /clip/download
+Because you always wanted exactly this clip.

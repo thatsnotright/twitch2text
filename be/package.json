@@ -11,6 +11,8 @@
     "koa-body": "^4.1.0",
     "koa-router": "^7.4.0",
     "koa-session2": "^2.2.10",
+    "lets-get-meta": "^2.1.1",
+    "node-fetch": "^2.3.0",
     "serverless-http": "^2.0.1",
     "twitch-helix": "^1.0.7"
   },
