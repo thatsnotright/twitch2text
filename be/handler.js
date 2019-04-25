@@ -1,17 +1,20 @@
 const serverless = require('serverless-http');
 const Koa = require('koa');
 const Router = require('koa-router');
-const koaBody = require('koa-body');
+const AWS = require('aws-sdk');
+
+const config = new AWS.Config({
+  region: 'us-east-1',
+  apiVersion: '2012-08-10',
+});
+
 const twitch = require('./twitch');
-const fetch = require('node-fetch');
-const getMeta = require('lets-get-meta');
+const s3 = require('./services/s3')(new AWS.S3(config));
+const db = require('./services/db')(new AWS.DynamoDB(config));
 
 const app = new Koa();
 const router = new Router({
   prefix: '/',
-});
-const clipsRouter = new Router({
-  prefix: '/clips',
 });
 
 app.use(async (ctx, next) => {
@@ -28,41 +31,19 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}`);
 });
 
-clipsRouter.get('/', async (ctx, next) => {
-  const [talima, ...rest] = await twitch.sendHelixRequest('users?login=teamTALIMA');
-  const { id } = talima;
-  const url = `clips?broadcaster_id=${id}`;
-  console.log(url);
-  ctx.body = await twitch.sendHelixRequest(url);
-});
-
-clipsRouter.get('/download', async (ctx, next) => {
-  const clipUrl = 'https://clips.twitch.tv/SucculentHandsomeDolphinBigBrother';
-  const main = await fetch('https://clipr.xyz/');
-  const result = getMeta(await main.text());
-  const body = JSON.stringify({ clip_url: clipUrl });
-  console.log(body);
-
-  // TODO make this a query param or use a different ID etc
-  const downloadInfo = await fetch('https://clipr.xyz/api/grabclip', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Cookie: `X-CSRF-TOKEN=${result['csrf-token']}`,
-    },
-    body,
-  });
-  const { download_url } = await downloadInfo.json();
-  ctx.body = download_url;
-});
-
-router.get('/', async (ctx, next) => {
+/**
+ * Get a list of potential streams or clips which can be textualized
+ *
+ * For now this is hard coded and should be moved to its own route file
+ */
+router.get('/', async ctx => {
   // TODO stream this response if the headers don't give away secrets
   ctx.body = await twitch.sendHelixRequest('users?login=teamTALIMA');
 });
 app.use(router.routes());
-app.use(clipsRouter.routes());
+
+// Register route handlers below
+require('./routes/clips')(app, s3, db, twitch);
 
 if (process.env.CMD) app.listen(8080);
 
