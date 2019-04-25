@@ -6,7 +6,7 @@ const uuid = require('uuid');
 const curry = require('curry');
 
 const clipsRouter = new Router({
-  prefix: '/clips',
+  prefix: '/api/clips',
 });
 
 /**
@@ -25,7 +25,7 @@ const get = async (twitch, ctx) => {
 /**
  * Download a specific clip by clip URL and plop it in s3 for processng
  */
-const download = async (s3, db /* , ctx */) => {
+const download = async (s3, db, transcribe, ctx) => {
   // TODO read clipUrl and clipId from POST body ctx
   const clipUrl = 'https://clips.twitch.tv/SucculentHandsomeDolphinBigBrother';
   const main = await fetch('https://clipr.xyz/');
@@ -43,15 +43,24 @@ const download = async (s3, db /* , ctx */) => {
   });
   const { download_url } = await downloadInfo.json(); // eslint-disable-line
   const path = uuid.v4();
-  s3.toS3(path, download_url); // eslint-disable-line
-  return db.associateClip(path, download_url);
+  s3.toS3(`${path}.mp4`, download_url)
+    .then(async () => {
+      const transKey = await transcribe.startTranscription(path);
+      console.log(transKey); // TODO use this?  this comes back when the job is done
+    })
+    .catch(e => {
+      console.error(e);
+      // TODO mark failed s3 upload
+    });
+  const dbRes = await db.associateClip(path, download_url);
+  ctx.body = dbRes;
 };
 
 /**
  * Clip Router requires the app, an s3 module, the db module and access to the Twitch API
  */
-module.exports = (app, s3, db, twitch) => {
-  clipsRouter.get('/download', koaBody(), curry.to(3, download)(s3, db));
+module.exports = (app, s3, db, transcribe, twitch) => {
+  clipsRouter.get('/download', curry.to(4, download)(s3, db, transcribe));
   clipsRouter.get('/', curry.to(2, get)(twitch));
   app.use(clipsRouter.routes());
 };

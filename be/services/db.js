@@ -15,11 +15,11 @@ async function associateClip(path, clipId) {
   };
 
   return new Promise((resolve, reject) => {
-    db.putItem(params, (err, data) => {
+    db.putItem(params, err => {
       if (err) {
         reject(err);
       } else {
-        resolve({ success: true, data });
+        resolve({ success: true, result: { path, clipId } });
       }
     });
   });

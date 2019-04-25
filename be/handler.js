@@ -6,15 +6,19 @@ const AWS = require('aws-sdk');
 const config = new AWS.Config({
   region: 'us-east-1',
   apiVersion: '2012-08-10',
+  apiVersions: {
+    transcribeservice: '2017-10-26',
+  },
 });
 
 const twitch = require('./twitch');
 const s3 = require('./services/s3')(new AWS.S3(config));
 const db = require('./services/db')(new AWS.DynamoDB(config));
+const transcribe = require('./services/transcribe')(new AWS.TranscribeService(config));
 
 const app = new Koa();
 const router = new Router({
-  prefix: '/',
+  prefix: '/api',
 });
 
 app.use(async (ctx, next) => {
@@ -36,14 +40,14 @@ app.use(async (ctx, next) => {
  *
  * For now this is hard coded and should be moved to its own route file
  */
-router.get('/', async ctx => {
+router.get('/users', async ctx => {
   // TODO stream this response if the headers don't give away secrets
   ctx.body = await twitch.sendHelixRequest('users?login=teamTALIMA');
 });
 app.use(router.routes());
 
 // Register route handlers below
-require('./routes/clips')(app, s3, db, twitch);
+require('./routes/clips')(app, s3, db, transcribe, twitch);
 
 if (process.env.CMD) app.listen(8080);
 
