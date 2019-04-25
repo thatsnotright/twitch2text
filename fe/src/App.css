@@ -1,33 +1,273 @@
 .App {
-  text-align: center;
+  padding: 25px;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+  animation: App-logo-spin infinite 5s linear;
+  height: 80px;
+  border: 2px dashed #AC816B;
+  width: 128px;
+  height: 128px;
+  margin-left:auto;
+  margin-right: auto;
+  vertical-align: middle;
+  text-align: center;
+}
+.App-logo div {
+  font-size: 25pt;
+  margin-left: auto;
+  margin-right: auto;
+}
+.App-fixed {
+  height: 128px;
+}
+.App-logo:hover {
+  animation: App-logo-dropdown 2s;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: #495C70;
+  height: 150px;
+  padding: 25px;
   color: white;
+  bottom: 0px;
+  font-size: 5rem;
+  text-align: center;
 }
 
-.App-link {
-  color: #61dafb;
+.App-title {
+  font-size: 1.5em;
+  color: #FAF1D3;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.App .task {
+  border: 2px solid #2a4a5a;
+  
+}
+a:hover, a:visited, a:link, a:active {
+  text-decoration: none;
+  color: #495C70;
+}
+.expando {
+  display: none;
+}
+.expando:target {
+  display: block;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); border: 2px dashed #716129; }
+  50% { transform: rotate(0deg); border: 2px dashed #AC816B; }
+  75% { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes App-logo-dropdown {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(360deg); }
+}
+
+/**
+*** SIMPLE GRID
+*** (C) ZACH COLE 2016
+**/
+p {
+  font-size: 1.125rem;
+  font-weight: 200;
+  line-height: 1.8;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-regular {
+  font-weight: 400;
+}
+
+.font-heavy {
+  font-weight: 700;
+}
+
+/* POSITIONING */
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.justify {
+  text-align: justify;
+}
+
+/* ==== GRID SYSTEM ==== */
+
+.container {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.row {
+  position: relative;
+  width: 100%;
+}
+
+.row [class^="col"] {
+  float: left;
+  margin: 0.5rem 2%;
+  min-height: 0.125rem;
+}
+
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+  width: 96%;
+}
+
+.col-1-sm {
+  width: 4.33%;
+}
+
+.col-2-sm {
+  width: 12.66%;
+}
+
+.col-3-sm {
+  width: 21%;
+}
+
+.col-4-sm {
+  width: 29.33%;
+}
+
+.col-5-sm {
+  width: 37.66%;
+}
+
+.col-6-sm {
+  width: 46%;
+}
+
+.col-7-sm {
+  width: 54.33%;
+}
+
+.col-8-sm {
+  width: 62.66%;
+}
+
+.col-9-sm {
+  width: 71%;
+}
+
+.col-10-sm {
+  width: 79.33%;
+}
+
+.col-11-sm {
+  width: 87.66%;
+}
+
+.col-12-sm {
+  width: 96%;
+}
+
+.row::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.hidden-sm {
+  display: none;
+}
+
+@media only screen and (min-width: 33.75em) {  /* 540px */
+  .container {
+    width: 80%;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media only screen and (min-width: 45em) {  /* 720px */
+  .col-1 {
+    width: 4.33%;
+  }
+
+  .col-2 {
+    width: 12.66%;
+  }
+
+  .col-3 {
+    width: 21%;
+  }
+
+  .col-4 {
+    width: 29.33%;
+  }
+
+  .col-5 {
+    width: 37.66%;
+  }
+
+  .col-6 {
+    width: 46%;
+  }
+
+  .col-7 {
+    width: 54.33%;
+  }
+
+  .col-8 {
+    width: 62.66%;
+  }
+
+  .col-9 {
+    width: 71%;
+  }
+
+  .col-10 {
+    width: 79.33%;
+  }
+
+  .col-11 {
+    width: 87.66%;
+  }
+
+  .col-12 {
+    width: 96%;
+  }
+
+  .hidden-sm {
+    display: block;
+  }
+}
+
+@media only screen and (min-width: 60em) { /* 960px */
+  .container {
+    width: 75%;
+    max-width: 60rem;
   }
 }
